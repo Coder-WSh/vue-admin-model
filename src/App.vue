@@ -9,7 +9,5 @@
 </template>
 
 <style lang="less" scoped>
-.router-pannel{
-  height: 100%;
-}
+
 </style>

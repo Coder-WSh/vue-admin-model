@@ -64,12 +64,12 @@ export default defineConfig({
     hmr: true,
     proxy: {
       "/api": {
-        target: "",
+        target: "http://localhost:3000/apis",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(/^\/apis/, ""),
       },
       "/local": {
-        target: "http://localhost:8081",
+        target: "http://localhost:3000/apis",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/local/, ""),
       },

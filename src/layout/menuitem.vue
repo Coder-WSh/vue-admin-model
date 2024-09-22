@@ -9,8 +9,13 @@
       :index="menuItem.path"
     >
       <template #title>
-        <el-icon></el-icon>
-        <span>Navigator One</span>
+        <!-- <Icon :icon="menuItem.meta.icon" /> -->
+        <!-- <ElIcon> -->
+
+        <component :is="`i-ep-${menuItem.meta.icon}`" />
+        <!-- </ElIcon> -->
+
+        <span>{{ menuItem.meta.tittle }}</span>
       </template>
       <menuItem
         v-for="item in menuItem.children"
@@ -19,28 +24,15 @@
       />
     </el-sub-menu>
     <ElMenuItem v-else-if="menuItem.meta.isShow" :index="menuItem.path">
-     <template #title>
-       <el-icon></el-icon>
-       <span>{{ menuItem.meta.tittle }}</span>
-     </template>
+      <template #title>
+        <component :is="`i-ep-${menuItem.meta.icon}`" />
+        <span>{{ menuItem.meta.tittle }}</span>
+      </template>
     </ElMenuItem>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  reactive,
-  unref,
-  ref,
-  toRefs,
-  watch,
-  onBeforeMount,
-  onMounted,
-  onUnmounted,
-  nextTick,
-  onActivated,
-} from "vue";
-
 defineOptions({
   name: "MenuItem",
 });

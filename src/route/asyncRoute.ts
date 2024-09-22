@@ -3,21 +3,20 @@ import type { RouteRecordRaw } from "vue-router";
 // 异步路由
 const asyncRoute: RouteRecordRaw[] = [
   {
-    path: "/login",
-    name: "login",
-    component: () => import("../views/login/Login.vue"),
-    meta: { tittle: "登录" },
+    path: "/dashboard",
+    name: "Dashboard",
+    component: () => import("../views/main/dashboard.vue"),
+    // redirect: "/dashboard2",
+    meta: { tittle: "展览", isShow: true, icon: "Document", roles: ["admin"] },
   },
   {
-    path: "/",
-    name: "main",
-    component: () => import("../views/main/Main.vue"),
-    meta: { tittle: "首页" },
+    path: "/3DTest",
+    name: "3DTest",
+    component: () => import("../views/three-test/Three-test.vue"),
+    // redirect: "/dashboard2",
+    meta: { tittle: "3D展示", isShow: true, roles: ["admin"] },
   },
 ];
-
-const router = useRouter();
-const ROUTER_WHITE_LIST = ["login", "main", "NOTFOUND"];
 
 // router.beforeEach((to, form, next) => {
 //   let token = "";

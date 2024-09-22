@@ -65,7 +65,7 @@ const formData = ref({
   password: "",
 });
 const rules = {
-  name: [{ require: true, message: "请输入账户名称" }],
+  account: [{ require: true, message: "请输入账户名称" }],
   password: [
     { require: true, message: "请输入密码" },
     {
@@ -87,6 +87,7 @@ const handleSubmit = async () => {
       login(formData.value)
         .then((res) => {
           infos.setToken(res.data);
+          route.push("/");
         })
         .catch((err) => {
           ElMessage({
@@ -94,7 +95,6 @@ const handleSubmit = async () => {
             type: "warning",
           });
         });
-      route.push("/");
     } else {
     }
   });
@@ -103,12 +103,11 @@ const handleCancel = () => {
   formRef.value && formRef.value.resetFields();
 };
 
-
 // dialog逻辑
 const visible = ref(false);
 const dialogForm = ref<FormInstance>();
 const dialogFormData = [
-  { type: "input", label: "账户", prop: "account", span: 24 },
+  { type: "input", label: "账户", prop: "username", span: 24 },
   {
     type: "input",
     label: "密码",
@@ -140,7 +139,7 @@ const dialogFormData = [
 ];
 
 const formValue = ref({
-  account: "",
+  username: "",
   password: "",
   email: "",
   mobile: "",
@@ -192,15 +191,16 @@ const handleClose = () => {
 };
 //dialog form提交
 const handleDialogForm = () => {
-  register(formValue.value).then((res) => {
+  register({
+    ...formValue.value,
+    roleIds: [1],
+  }).then((res) => {
     dialogForm.value?.clearForm();
     visible.value = false;
   });
 };
 
 
-const router=useRouter()
-console.log('router.getRoutes()',router.getRoutes())
 </script>
 
 <style lang="less" scoped>

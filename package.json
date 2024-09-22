@@ -29,6 +29,7 @@
   "devDependencies": {
     "@iconify-json/ep": "^1.2.0",
     "@types/node": "^20.11.20",
+    "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "@vue/babel-plugin-jsx": "^1.2.4",

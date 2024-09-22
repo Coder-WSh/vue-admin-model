@@ -1,48 +1,39 @@
 <template>
   <div class="dashboard-panel">
-    <div
-      v-for="item in draggerList"
-      :style="{
-        background: item.background,
-        height:'60px'
-      }"
-      :key="item.background"
-      draggable="true"
-    >
-      {{ item.time }}
-    </div>
+    <div class="a">123</div>
   </div>
 </template>
 
 <script setup lang="ts">
-const draggerList = ref([
-  {
-    time: "2023-05-01",
-    background: "#000",
-  },
-  {
-    time: "2023-05-01",
-    background: "red",
-  },
+// const draggerList = ref([
+//   {
+//     time: "2023-05-01",
+//     background: "#000",
+//   },
+//   {
+//     time: "2023-05-01",
+//     background: "red",
+//   },
 
-  {
-    time: "2023-05-01",
-    background: "pink",
-  },
-  {
-    time: "2023-05-01",
-    background: "green",
-  },
-  {
-    time: "2023-05-01",
-    background: "purple",
-  },
-]);
+//   {
+//     time: "2023-05-01",
+//     background: "pink",
+//   },
+//   {
+//     time: "2023-05-01",
+//     background: "green",
+//   },
+//   {
+//     time: "2023-05-01",
+//     background: "purple",
+//   },
+// ]);
+const router=useRouter()
+console.log('router',router.getRoutes())
 </script>
 
 <style lang="less" scoped>
 .dashboard-panel {
-  height: 100%;
-  // border: 1px solid red;
+
 }
 </style>
