@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import * as echarts from "echarts";
-import type { ECOption } from "@/types/echarts";
-import type { ECharts } from "echarts";
+import echarts from "@/global/echarts/index.ts";
+import type { ECOption } from "@/global/echarts/index.ts";
+
 import { debounce } from "lodash-es";
 defineOptions({
   name: "Echarts",
@@ -18,12 +18,12 @@ const props = withDefaults(
   }>(),
   {
     width: "100%",
-    height: "200px",
+    // height: "200px",
   }
 );
 const emits = defineEmits();
 const el = ref<null | HTMLElement>(null);
-let myChart = ref<ECharts | null>();
+let myChart = shallowRef();
 
 function toLine(name: string) {
   return name.replace(/([A-Z])/g, "_$1").toLowerCase();
@@ -35,8 +35,16 @@ const options = computed(() => {
   });
 });
 
+// watch(
+//   () => options.value,
+//   () => {
+//     console.log(" 1111");
+//     myChart?.value?.setOption?.(options.value);
+//   }
+// );
 watchEffect(() => {
-  myChart.value && myChart?.value.setOption(options.value);
+  console.log(" 1111");
+  myChart?.value?.setOption?.(options.value);
 });
 
 function initChart() {
