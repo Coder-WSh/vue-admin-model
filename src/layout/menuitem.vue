@@ -1,35 +1,43 @@
 <template>
-  <div class="menu-item-panel">
-    <el-sub-menu
-      v-if="
-        menuItem.children &&
-        menuItem.children.length > 0 &&
-        menuItem.meta.isShow
-      "
-      :index="menuItem.path"
-    >
-      <template #title>
-        <!-- <Icon :icon="menuItem.meta.icon" /> -->
-        <!-- <ElIcon> -->
-
-        <component :is="`i-ep-${menuItem.meta.icon}`" />
-        <!-- </ElIcon> -->
-
-        <span>{{ menuItem.meta.tittle }}</span>
-      </template>
-      <menuItem
-        v-for="item in menuItem.children"
-        :key="item.path"
-        :menuItem="item"
+  <el-sub-menu
+    v-if="
+      menuItem?.children &&
+      menuItem?.children.length > 0 &&
+      menuItem?.meta.isShow
+    "
+    :index="menuItem?.path"
+  >
+    <template #title>
+      <SvgIcon
+        :name="menuItem?.meta.icon"
+        width="20px"
+        height="20px"
+        style="margin: 0 5px"
       />
-    </el-sub-menu>
-    <ElMenuItem v-else-if="menuItem.meta.isShow" :index="menuItem.path">
-      <template #title>
-        <component :is="`i-ep-${menuItem.meta.icon}`" />
-        <span>{{ menuItem.meta.tittle }}</span>
-      </template>
-    </ElMenuItem>
-  </div>
+
+      <!-- <component :is="`icon-ep-${menuItem.meta.icon}`" /> -->
+      <!-- </ElIcon> -->
+
+      <span>{{ menuItem?.meta.tittle }}</span>
+    </template>
+    <menuItem
+      v-for="item in menuItem?.children"
+      :key="item.path"
+      :menuItem="item"
+    />
+  </el-sub-menu>
+  <ElMenuItem v-else-if="menuItem?.meta.isShow" :index="menuItem.path">
+    <template #title>
+      <!-- <component :is="`i-ep-${menuItem.meta.icon}`" /> -->
+      <SvgIcon
+        :name="menuItem?.meta.icon"
+        width="20px"
+        height="20px"
+        style="margin: 0 5px"
+      />
+      <span>{{ menuItem?.meta.tittle }}</span>
+    </template>
+  </ElMenuItem>
 </template>
 
 <script setup lang="ts">
@@ -39,7 +47,7 @@ defineOptions({
 defineProps({
   menuItem: {
     type: Object,
-    default: null,
+    default: () => {},
   },
 });
 </script>

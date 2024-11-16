@@ -1,39 +1,26 @@
 <template>
   <div class="dashboard-panel">
-    <div class="a">123</div>
+    <!-- <Echarts :options="options" /> -->
+    <!-- <el-button @contextmenu.prevent="handleContextmenu">123</el-button> -->
+    <div @click="a = 2">{{ a }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-// const draggerList = ref([
-//   {
-//     time: "2023-05-01",
-//     background: "#000",
-//   },
-//   {
-//     time: "2023-05-01",
-//     background: "red",
-//   },
-
-//   {
-//     time: "2023-05-01",
-//     background: "pink",
-//   },
-//   {
-//     time: "2023-05-01",
-//     background: "green",
-//   },
-//   {
-//     time: "2023-05-01",
-//     background: "purple",
-//   },
-// ]);
-const router=useRouter()
-console.log('router',router.getRoutes())
+// import Erzi from "./erzi.vue";
+const tableRef = ref();
+const router = useRouter();
+const a = ref(123);
+// const handleContextmenu = (e) => {
+//   console.log(" ", e);
+//   // console.log(" ", e, a, b, c);
+// };
+onBeforeUpdate(() => {
+  console.log("before update", a.value);
+});
 </script>
 
 <style lang="less" scoped>
 .dashboard-panel {
-
 }
 </style>

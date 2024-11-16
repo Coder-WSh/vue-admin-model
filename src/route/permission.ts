@@ -36,15 +36,14 @@ router.beforeEach(async (to, from, next) => {
         const ROLE = "admin";
         roleRouter.value = filterRoutersByRole(asyncRoute, ROLE);
         hasPermission = true;
-
-        roleRouter.value.forEach((item) => {
-          // console.log("item", item);
-          router.addRoute("Main", {
-            ...item,
-          });
+        asyncAddRouter(roleRouter.value);
+        // 添加404路由
+        router.addRoute({
+          path: "/:pathMatch(.*)*",
+          name: "NOTFOUND",
+          component: () => import("../views/notfound/404.vue"),
+          meta: { tittle: "404" },
         });
-        // 跳转路由
-
         next({ ...to, replace: true });
       }
     }
@@ -96,11 +95,35 @@ const filterRoutersByRole: (
     .filter((item) => item !== undefined) as RouteRecordRaw[];
 };
 
+const asyncAddRouter = (routers: RouteRecordRaw[], parentName?: string) => {
+  if (Array.isArray(routers) && routers && routers.length) {
+    routers.forEach((item) => {
+      router.addRoute(parentName || ("Main" as string), {
+        ...item,
+      });
+      if (item.children && item.children.length) {
+        asyncAddRouter(item.children, item.name as string);
+      }
+    });
+  }
+};
+
+const clean = (routers: RouteRecordRaw[]) => {
+  if (Array.isArray(routers) && routers && routers.length) {
+    routers.forEach((item) => {
+      if (item.children && item.children.length) {
+        clean(item.children);
+      }
+      router.removeRoute(item.name as RouteRecordName);
+    });
+  }
+};
 export function cleanRouter() {
   router.getRoutes().forEach((item) => {
-    !ROUTER_WHITE_LIST.includes(item.name as string) &&
-      router.removeRoute(item.name as RouteRecordName);
+    !ROUTER_WHITE_LIST.includes(item.name as string) && clean(roleRouter.value);
+    // router.removeRoute(item.name as RouteRecordName);
   });
+  router.removeRoute("NOTFOUND"); // 清空路由
   hasPermission = false;
   infosStore.clean();
 }

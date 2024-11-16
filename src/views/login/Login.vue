@@ -95,7 +95,6 @@ const handleSubmit = async () => {
             type: "warning",
           });
         });
-    } else {
     }
   });
 };
@@ -199,8 +198,6 @@ const handleDialogForm = () => {
     visible.value = false;
   });
 };
-
-
 </script>
 
 <style lang="less" scoped>

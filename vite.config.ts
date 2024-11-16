@@ -14,7 +14,7 @@ import AutoImport from "unplugin-auto-import/vite";
 
 import IconsResolver from "unplugin-icons/resolver";
 import Icons from "unplugin-icons/vite";
-
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,6 +24,10 @@ export default defineConfig({
     visualizer(),
     ViteRestart({}),
     viteCompression(),
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), "src/assets/images/svg")],
+      symbolId: "icon-[dir]-[name]",
+    }),
 
     createStyleImportPlugin({
       resolves: [ElementPlusResolve()],
@@ -36,6 +40,7 @@ export default defineConfig({
         // 自动导入图标组件
         IconsResolver({
           prefix: "Icon",
+          // enabledCollections: ["ep"],
         }),
       ],
       dts: "src/auto-import.d.ts",
@@ -46,12 +51,14 @@ export default defineConfig({
       resolvers: [
         ElementPlusResolver(),
         IconsResolver({
+          prefix: "Icon",
           enabledCollections: ["ep"],
         }),
       ], //解析element plus
       dts: "src/components.d.ts", // 输出文件，里面都是一些import的组件键值对
     }),
     Icons({
+      // compiler: "vue3",
       autoInstall: true,
     }),
   ],

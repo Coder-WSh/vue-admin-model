@@ -1,9 +1,8 @@
 <template>
   <div class="layer-panel">
     <div class="left-panel-menu">
-      <div class="logo">
-        <el-icon :size="25" style="margin: 0 10px"><i-ep-Document /></el-icon>
-
+      <div class="logo" @click="goToMain">
+        <SvgIcon name="logo" width="30px" height="30px" style="margin: 0 5px" />
         <Transition name="logo-keyframe">
           <span v-if="!isExpand">后台管理</span>
         </Transition>
@@ -28,10 +27,10 @@
         <div class="header-left">
           <span style="cursor: pointer">
             <el-icon size="24" v-if="isExpand" @click="changeExpand(true)"
-              ><i-ep-Expand
+              ><icon-ep-Expand
             /></el-icon>
             <el-icon size="24" v-else @click="changeExpand(false)"
-              ><i-ep-Fold
+              ><icon-ep-Fold
             /></el-icon>
           </span>
           <el-breadcrumb separator="/">
@@ -77,22 +76,19 @@
 import MenuItem from "./menuitem.vue";
 import roleMenus, { cleanRouter } from "@/route/permission.ts";
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  //   console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  //   console.log(key, keyPath);
-};
+const router = useRouter();
+const handleOpen = (key: string, keyPath: string[]) => {};
+const handleClose = (key: string, keyPath: string[]) => {};
 
 const isExpand = ref<boolean>(true);
 const changeExpand = (bool: boolean) => {
   isExpand.value = !bool;
 };
 
-const router = useRouter();
-const menuList = ref<any[] | null>();
-// menuList.value = router.getRoutes().find((item) => item.path === "/")?.children;
-// const route = useRoute();
+const goToMain = () => {
+  router.push({ path: "/" });
+};
+
 const systemMenus = [
   {
     info: "退出登录",
@@ -108,9 +104,11 @@ const systemMenus = [
 .layer-panel {
   display: flex;
   height: 100vh;
+  background: rgb(242, 243, 245);
   overflow: hidden;
   .left-panel-menu {
     background: #1352a3;
+    // width: 200px;
     height: 100%;
     .el-menu-vertical-demo:not(.el-menu--collapse) {
       width: 200px;
@@ -134,18 +132,23 @@ const systemMenus = [
   }
   .right-panel {
     // display: flex;
+    flex: 1;
     height: 100%;
-    flex-grow: 1;
+    // flex-grow: 1;
     display: flex;
     flex-direction: column;
     // width: 100%;
-    padding: 5px;
+    padding: 10px;
 
     // padding: var(--sys-padding);
     .right-panel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 5px;
+      margin-right: 10px;
+      border-radius: 5px;
+      background: #fff;
       height: 30px;
       .header-left {
         display: flex;
@@ -161,9 +164,11 @@ const systemMenus = [
     }
 
     .router-content {
-      flex-grow: 1;
-      overflow-y: scroll;
-      border: 1px solid red;
+      margin: 10px 10px 10px 0;
+      height: 100%;
+      background: #fff;
+      border-radius: 5px;
+      overflow: hidden;
     }
   }
 }
