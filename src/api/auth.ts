@@ -1,3 +1,4 @@
+
 import instance from "../uilts/request.ts";
 
 export function register(data: any) {

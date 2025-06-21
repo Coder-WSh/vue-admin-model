@@ -1,9 +1,7 @@
-import { useInfosStore } from "@/store/userInfos/Infos";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { RouteRecordRaw, Router } from "vue-router";
 // 基本路由
 const routes: RouteRecordRaw[] = [
-
   {
     // login
     path: "/login",
@@ -19,7 +17,7 @@ const routes: RouteRecordRaw[] = [
     redirect: "/dashboard",
     children: [],
   },
-  
+
   // {
   //   path: "/:pathMatch(.*)*",
 

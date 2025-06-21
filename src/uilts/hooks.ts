@@ -1,4 +1,4 @@
-import { ElMessageBox } from "element-plus";
+// import { ElMessageBox } from "element-plus";
 import { toEle, useEventLister } from "./base";
 
 export const useElementSize = (instance: any) => {
@@ -21,4 +21,6 @@ export const useElementSize = (instance: any) => {
   };
 };
 
-
+export const useType = (el: unknown, type: string): boolean => {
+  return Object.prototype.toString.call(el).slice(8, -1) === type;
+};

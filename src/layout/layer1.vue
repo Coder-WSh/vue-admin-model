@@ -65,6 +65,8 @@
           </el-popover>
         </div>
       </div>
+
+      <!-- <Tabs/> -->
       <div class="router-content">
         <RouterView />
       </div>
@@ -73,12 +75,17 @@
 </template>
 
 <script lang="ts" setup>
+// import Tabs from "@/components/Tab/Tabs.vue";
 import MenuItem from "./menuitem.vue";
 import roleMenus, { cleanRouter } from "@/route/permission.ts";
 
 const router = useRouter();
-const handleOpen = (key: string, keyPath: string[]) => {};
-const handleClose = (key: string, keyPath: string[]) => {};
+const handleOpen = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+const handleClose = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
 
 const isExpand = ref<boolean>(true);
 const changeExpand = (bool: boolean) => {
@@ -98,6 +105,21 @@ const systemMenus = [
     },
   },
 ];
+
+// const testMenus = [
+//   {
+//     info: "test",
+//     handle: function () {
+//       console.log("test");
+//     },
+//   },
+//   {
+//     info: "test2",
+//     handle: function () {
+//       console.log("test2");
+//     },
+//   },
+// ];
 </script>
 
 <style lang="less" scoped>

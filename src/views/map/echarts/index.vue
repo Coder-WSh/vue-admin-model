@@ -1,6 +1,6 @@
 <template>
   <div class="echarts-map-panel">
-    <Echarts :options="options" />
+    <Echarts :options="option" />
   </div>
 </template>
 
@@ -9,394 +9,169 @@ import echarts from "@/global/echarts/index.ts";
 import china from "@/assets/json/china.json";
 
 echarts.registerMap("china", china as any);
-let chinaGeoCoordMap = {
-  黑龙江: [127.9688, 45.368],
-  内蒙古: [110.3467, 41.4899],
-  吉林: [125.8154, 44.2584],
-  北京市: [116.4551, 40.2539],
-  辽宁: [123.1238, 42.1216],
-  河北: [114.4995, 38.1006],
-  天津: [117.4219, 39.4189],
-  山西: [112.3352, 37.9413],
-  陕西: [109.1162, 34.2004],
-  甘肃: [103.5901, 36.3043],
-  宁夏: [106.3586, 38.1775],
-  青海: [101.4038, 36.8207],
-  新疆: [87.9236, 43.5883],
-  西藏: [91.11, 29.97],
-  四川: [103.9526, 30.7617],
-  重庆: [108.384366, 30.439702],
-  山东: [117.1582, 36.8701],
-  河南: [113.4668, 34.6234],
-  江苏: [118.8062, 31.9208],
-  安徽: [117.29, 32.0581],
-  湖北: [114.3896, 30.6628],
-  浙江: [119.5313, 29.8773],
-  福建: [119.4543, 25.9222],
-  江西: [116.0046, 28.6633],
-  湖南: [113.0823, 28.2568],
-  贵州: [106.6992, 26.7682],
-  云南: [102.9199, 25.4663],
-  广东: [113.12244, 23.009505],
-  广西: [108.479, 23.1152],
-  海南: [110.3893, 19.8516],
-  上海: [121.4648, 31.2891],
-};
+const img =
+  "data:image/png;base64,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";
 
-let chinaDatas = [
-  [
-    {
-      name: "黑龙江",
-      value: 5,
-    },
-  ],
-  [
-    {
-      name: "内蒙古",
-      value: 3,
-    },
-  ],
-  [
-    {
-      name: "北京市",
-      value: 20,
-    },
-  ],
-  [
-    {
-      name: "吉林",
-      value: 3,
-    },
-  ],
-  [
-    {
-      name: "辽宁",
-      value: 5,
-    },
-  ],
-  [
-    {
-      name: "河北",
-      value: 6,
-    },
-  ],
-  [
-    {
-      name: "天津",
-      value: 5,
-    },
-  ],
-  [
-    {
-      name: "山西",
-      value: 7,
-    },
-  ],
-  [
-    {
-      name: "陕西",
-      value: 6,
-    },
-  ],
-  [
-    {
-      name: "甘肃",
-      value: 5,
-    },
-  ],
-  [
-    {
-      name: "宁夏",
-      value: 5,
-    },
-  ],
-  [
-    {
-      name: "青海",
-      value: 7,
-    },
-  ],
-  [
-    {
-      name: "新疆",
-      value: 3,
-    },
-  ],
-  [
-    {
-      name: "西藏",
-      value: 3,
-    },
-  ],
-  [
-    {
-      name: "四川",
-      value: 10,
-    },
-  ],
-  [
-    {
-      name: "重庆",
-      value: 9,
-    },
-  ],
-  [
-    {
-      name: "广东",
-      value: 10,
-    },
-  ],
-  [
-    {
-      name: "山东",
-      value: 6,
-    },
-  ],
-  [
-    {
-      name: "河南",
-      value: 8,
-    },
-  ],
-  [
-    {
-      name: "江苏",
-      value: 10,
-    },
-  ],
-  [
-    {
-      name: "安徽",
-      value: 9,
-    },
-  ],
-  [
-    {
-      name: "湖北",
-      value: 10,
-    },
-  ],
-  [
-    {
-      name: "浙江",
-      value: 16,
-    },
-  ],
-  [
-    {
-      name: "福建",
-      value: 9,
-    },
-  ],
-
-  [
-    {
-      name: "湖南",
-      value: 14,
-    },
-  ],
-  [
-    {
-      name: "贵州",
-      value: 8,
-    },
-  ],
-  [
-    {
-      name: "广西",
-      value: 7,
-    },
-  ],
-  [
-    {
-      name: "海南",
-      value: 7,
-    },
-  ],
-  [
-    {
-      name: "上海",
-      value: 17,
-    },
-  ],
+const trafficWay = [
+  {
+    name: "火车",
+    value: 20,
+  },
+  {
+    name: "飞机",
+    value: 10,
+  },
+  {
+    name: "客车",
+    value: 30,
+  },
+  {
+    name: "轮渡",
+    value: 40,
+  },
 ];
 
-let convertData = function (data) {
-  var res = [];
-  for (var i = 0; i < data.length; i++) {
-    var dataItem = data[i];
-    var fromCoord = chinaGeoCoordMap[dataItem[0].name];
-    var toCoord = [112.3352, 37.9413];
-    if (fromCoord && toCoord) {
-      res.push([
-        {
-          coord: toCoord,
-          value: dataItem[0].value,
-        },
-        {
-          coord: fromCoord,
-        },
-      ]);
-    }
-  }
-  return res;
-};
-
-let series = [];
-[["山西", chinaDatas]].forEach(function (item, i) {
-  console.log(item);
-  series.push(
+let data = [];
+const color = [
+  "#00ffff",
+  "#00cfff",
+  "#006ced",
+  "#ffe000",
+  "#ffa800",
+  "#ff5b00",
+  "#ff3000",
+];
+for (let i = 0; i < trafficWay.length; i++) {
+  data.push(
     {
-      type: "lines",
-      zlevel: 1,
-      effect: {
-        show: true,
-        period: 4, //箭头指向速度，值越小速度越快
-        trailLength: 0.1, //特效尾迹长度[0,1]值越大，尾迹越长重
-        symbol: "arrow", //箭头图标
-        symbolSize: 10, //图标大小
-      },
-      lineStyle: {
-        normal: {
-          width: 1, //尾迹线条宽度
-          opacity: 1, //尾迹线条透明度
-          curveness: 0.3, //尾迹线条曲直度
-        },
-      },
-      data: convertData(item[1]),
-    },
-    {
-      type: "effectScatter",
-      coordinateSystem: "geo",
-      zlevel: 2,
-      rippleEffect: {
-        //涟漪特效
-        period: 4, //动画时间，值越小速度越快
-        brushType: "stroke", //波纹绘制方式 stroke, fill
-        scale: 10, //波纹圆环最大限制，值越大波纹越大
-      },
-      label: {
-        normal: {
-          show: true,
-          position: "right", //显示位置
-          offset: [5, 0], //偏移设置
-          formatter: function (params) {
-            //圆环显示文字
-            return params.data.name;
-          },
-          fontSize: 10,
-        },
-        emphasis: {
-          show: true,
-        },
-      },
-      symbol: "circle",
-      symbolSize: function (val) {
-        return 3 + val[2] * 1; //圆环大小
-      },
+      value: trafficWay[i].value,
+      name: trafficWay[i].name,
       itemStyle: {
         normal: {
-          show: false,
-          color: "#FFA54F",
+          borderWidth: 5,
+          shadowBlur: 20,
+          borderColor: color[i],
+          shadowColor: color[i],
         },
       },
-      data: item[1].map(function (dataItem) {
-        return {
-          name: dataItem[0].name,
-          value: chinaGeoCoordMap[dataItem[0].name].concat([dataItem[0].value]),
-        };
-      }),
     },
-    //被攻击点
     {
-      type: "scatter",
-      coordinateSystem: "geo",
-      zlevel: 2,
-      rippleEffect: {
-        period: 4,
-        brushType: "stroke",
-        scale: 4,
-      },
-      label: {
+      value: 2,
+      name: "",
+      itemStyle: {
         normal: {
-          show: true,
-          position: "right",
-          //offset:[5, 0],
-          color: "#0f0",
-          formatter: "{b}",
-          textStyle: {
-            color: "#0f0",
+          label: {
+            show: false,
           },
-        },
-        emphasis: {
-          show: true,
-          color: "#FFA54F",
+          labelLine: {
+            show: false,
+          },
+          color: "rgba(0, 0, 0, 0)",
+          borderColor: "rgba(0, 0, 0, 0)",
+          borderWidth: 0,
         },
       },
-      symbol: "pin",
-      symbolSize: 50,
-      data: [
-        {
-          name: item[0],
-          value: chinaGeoCoordMap[item[0]].concat([10]),
-        },
-      ],
     }
   );
-});
-
-let options = {
-  tooltip: {
-    trigger: "item",
-    backgroundColor: "rgba(166, 200, 76, 0.82)",
-    borderColor: "#FFFFCC",
-    showDelay: 0,
-    hideDelay: 0,
-    enterable: true,
-    transitionDuration: 0,
-    extraCssText: "z-index:100",
-    formatter: function (params, ticket, callback) {
-      //根据业务自己拓展要显示的内容
-      var res = "";
-      var name = params.name;
-      var value = params.value[params.seriesIndex + 1];
-      res = "<span style='color:#fff;'>" + name + "</span><br/>数据：" + value;
-      return res;
+}
+let seriesOption = [
+  {
+    name: "",
+    type: "pie",
+    clockWise: false,
+    radius: [105, 109],
+    hoverAnimation: false,
+    itemStyle: {
+      normal: {
+        label: {
+          show: true,
+          position: "outside",
+          color: "#ddd",
+          formatter: function (params: any) {
+            let percent: number | string = 0;
+            let total = 0;
+            for (var i = 0; i < trafficWay.length; i++) {
+              total += trafficWay[i].value;
+            }
+            percent = ((params.value / total) * 100).toFixed(0);
+            if (params.name !== "") {
+              return (
+                "交通方式：" +
+                params.name +
+                "\n" +
+                "\n" +
+                "占百分比：" +
+                percent +
+                "%"
+              );
+            } else {
+              return "";
+            }
+          },
+        },
+        labelLine: {
+          length: 30,
+          length2: 100,
+          show: true,
+          color: "#00ffff",
+        },
+      },
     },
+    data: data,
   },
-  backgroundColor: "#13297B",
-  visualMap: {
-    //图例值控制
-    min: 1,
-    max: 30,
-    calculable: true,
-    show: true,
-    color: ["#f44336", "#fc9700", "#ffde00", "#ffde00", "#00eaff"],
+];
+const option:any = {
+  backgroundColor: "#0A2E5D",
+  color: color,
+  title: [
+    {
+    text: "交通方式",
+    top: "48%",
+    textAlign: "center",
+    left: "49%",
+    textStyle: {
+      color: "#fff",
+      fontSize: 22,
+      fontWeight: "400",
+    },
+  }
+  ],
+  graphic: {
+    elements: [
+      {
+        type: "image",
+        z: 3,
+        style: {
+          image: img,
+          width: 178,
+          height: 178,
+        },
+        left: "center",
+        top: "center",
+        position: [100, 100],
+      },
+    ],
+  },
+  tooltip: {
+    show: false,
+  },
+  legend: {
+    icon: "circle",
+    orient: "horizontal",
+    // x: 'left',
+    data: ["火车", "飞机", "客车", "轮渡"],
+    right: 340,
+    bottom: 150,
+    align: "right",
     textStyle: {
       color: "#fff",
     },
+    itemGap: 20,
   },
-  geo: {
-    map: "china",
-    zoom: 1.2,
-    label: {
-      emphasis: {
-        show: false,
-      },
-    },
-    roam: true, //是否允许缩放
-    itemStyle: {
-      normal: {
-        color: "#13297B", //地图背景色
-        borderColor: "#00fcff", //省市边界线00fcff 516a89
-        borderWidth: 1,
-      },
-      emphasis: {
-        color: "#13297B", //悬浮背景
-      },
-    },
+  toolbox: {
+    show: false,
   },
-  series: series,
+  series: seriesOption,
 };
 </script>
 

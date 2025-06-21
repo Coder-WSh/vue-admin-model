@@ -20,9 +20,9 @@ import { ElMessageBox } from "element-plus";
 
 const props = withDefaults(
   defineProps<{
-    visible?: Boolen;
-    tittle?: String;
-    isShowBtn?: Boolen;
+    visible?: boolean;
+    tittle?: string;
+    isShowBtn?: boolean;
   }>(),
   {
     visible: false,

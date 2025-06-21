@@ -6,6 +6,7 @@ import {
   LinesChart,
   ScatterChart,
   EffectScatterChart,
+  CustomChart,
 } from "echarts/charts";
 import {
   TitleComponent,
@@ -16,6 +17,9 @@ import {
   LegendComponent,
   GeoComponent,
   VisualMapComponent,
+  DataZoomComponent,
+  GraphicComponent,
+  ToolboxComponent,
 } from "echarts/components";
 import { LabelLayout, UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
@@ -32,6 +36,7 @@ import type {
   TooltipComponentOption,
   GridComponentOption,
   DatasetComponentOption,
+  
 } from "echarts/components";
 import type { ComposeOption } from "echarts/core";
 
@@ -60,6 +65,9 @@ echarts.use([
   LegendComponent,
   GeoComponent,
   VisualMapComponent,
+  DataZoomComponent,
+  GraphicComponent ,
+  ToolboxComponent ,
 
   BarChart,
   // LineChart,
@@ -68,6 +76,7 @@ echarts.use([
   MapChart,
   LinesChart,
   EffectScatterChart,
+  CustomChart,
 ]);
 
 // const option: ECOption = {

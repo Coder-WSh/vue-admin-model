@@ -1,73 +1,30 @@
 <template>
   <div class="login">
     <div class="login-panel">
-      <el-form
-        :model="formData"
-        :rules="rules"
-        ref="formRef"
-        label-width="auto"
-      >
-        <ElRow>
-          <ElCol :span="24">
-            <el-form-item label="账户" prop="name">
-              <ElInput v-model="formData.name" placeholder="请输入用户名" />
-            </el-form-item>
-          </ElCol>
-          <ElCol :span="24">
-            <el-form-item label="密码" prop="password">
-              <ElInput
-                v-model="formData.password"
-                type="password"
-                placeholder="请输入密码"
-                show-password
-              >
-              </ElInput>
-            </el-form-item>
-          </ElCol>
-        </ElRow>
-
-        <ElRow justify="end">
-          <ElButton @click="handleSubmit" type="primary"> 登录 </ElButton>
-          <ElButton @click="handleCancel"> 取消 </ElButton>
-        </ElRow>
-        <ElRow justify="end">
-          <ElButton size="small" link @click="handleVisible">
-            还未有账号,注册
-          </ElButton>
-        </ElRow>
-      </el-form>
+      <Form :formConfig="pnpmloginForm" />
     </div>
-    <Dialog :visible="visible" @close="handleClose" :isShowBtn="false">
-      <Form
-        ref="dialogForm"
-        :formList="dialogFormData"
-        :formValue="formValue"
-        :rules="dialogFormRules"
-        @successs="handleDialogForm"
-        @close="handleClose"
-      />
-    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from "element-plus";
+// import { ElMessage } from "element-plus";
 
-import type { ComponentSize, FormInstance, FormRules } from "element-plus";
+import type { ComponentSize } from "element-plus";
 
-import { register, login } from "@/api/login.ts";
+import { login } from "@/api/auth.ts";
 import { useInfosStore } from "@/store/userInfos/Infos";
+import { FormConfig, FormItemType } from "@/components/Form/types";
+import { Form } from "@/components/Form/index.ts";
 
 const route = useRouter();
 
-const formData = ref({
-  account: "",
-  password: "",
-});
 const rules = {
-  account: [{ require: true, message: "请输入账户名称" }],
+  account: [
+    { required: true, message: "请输入账户名称" },
+    { min: 6, message: "长度至少 6 位", trigger: "blur" },
+  ],
   password: [
-    { require: true, message: "请输入密码" },
+    { required: true, message: "请输入密码" },
     {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
       message: "密码必须以大写字母开头，包含大小写字母和数字，长度至少 8 位",
@@ -75,128 +32,58 @@ const rules = {
     },
   ],
 };
-const formRef = ref<FormInstance>();
+// const formRef = ref<FormInstance>();
 
 const infos = useInfosStore();
-const handleSubmit = async () => {
-  if (!formRef.value) return;
 
-  await formRef.value.validate((valid, fields) => {
-    if (valid) {
-      // 发请求，写后端接口
-      login(formData.value)
-        .then((res) => {
-          infos.setToken(res.data);
-          route.push("/");
-        })
-        .catch((err) => {
-          ElMessage({
-            message: err,
-            type: "warning",
+const pnpmloginForm: FormConfig = {
+  innerConfig: [
+    {
+      componentType: FormItemType.Input,
+      label: "账户",
+      prop: "account",
+      placeholder: "请输入账户名称",
+    },
+    {
+      componentType: FormItemType.Input,
+      label: "密码",
+      prop: "password",
+      type: "password",
+      placeholder: "请输入密码",
+    },
+    {
+      componentType: FormItemType.Button,
+      prop: "button",
+      defaultContent: "登录",
+      size: "medium" as ComponentSize,
+      type: "primary",
+      style: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      },
+      events: {
+        click: (data, el) => {
+          el.validate((valid: boolean) => {
+            if (valid) {
+              // login(data)
+              //   .then((res: any) => {
+              // const token = res.token ;
+              const token = "1234567890abcdef";
+              infos.setToken(token);
+
+              route.push("/main");
+              //   })
+              //   .catch((err) => {
+              //     ElMessage.warning(err?.message);
+              //   });
+            }
           });
-        });
-    }
-  });
-};
-const handleCancel = () => {
-  formRef.value && formRef.value.resetFields();
-};
-
-// dialog逻辑
-const visible = ref(false);
-const dialogForm = ref<FormInstance>();
-const dialogFormData = [
-  { type: "input", label: "账户", prop: "username", span: 24 },
-  {
-    type: "input",
-    label: "密码",
-    prop: "password",
-    span: 24,
-    innerType: "password",
-  },
-  { type: "input", label: "邮箱", prop: "email", span: 24 },
-  { type: "input", label: "手机号", prop: "mobile", span: 24 },
-  {
-    type: "datetime",
-    label: "出生日期",
-    prop: "birthday",
-    span: 24,
-    innerType: "date",
-    format: "YYYY/MM/DD",
-  },
-  {
-    type: "select",
-    label: "性别",
-    prop: "sex",
-    span: 24,
-    innerType: "",
-    options: [
-      { label: "男", value: 0 },
-      { label: "女", value: 1 },
-    ],
-  },
-];
-
-const formValue = ref({
-  username: "",
-  password: "",
-  email: "",
-  mobile: "",
-  birthday: "",
-  sex: 0,
-});
-
-const dialogFormRules: FormRules = {
-  account: [
-    {
-      required: true,
-      message: "请输入账户",
-      trigger: "blur",
+        },
+      },
     },
   ],
-  password: [
-    {
-      required: true,
-      message: "请输入密码",
-      trigger: "blur",
-    },
-    {
-      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-      message: "密码必须以大写字母开头，包含大小写字母和数字，长度至少 8 位",
-      trigger: "blur",
-    },
-  ],
-  mobile: [
-    {
-      required: true,
-      message: "请输入手机号",
-      trigger: "blur",
-    },
-    {
-      pattern: /^1[3-9]\d{9}$/,
-      message: "请输入正确手机号",
-      trigger: "blur",
-    },
-  ],
-};
-// 打开dialog
-const handleVisible = () => {
-  visible.value = true;
-};
-// 关闭dialog
-const handleClose = () => {
-  dialogForm.value?.clearForm();
-  visible.value = false;
-};
-//dialog form提交
-const handleDialogForm = () => {
-  register({
-    ...formValue.value,
-    roleIds: [1],
-  }).then((res) => {
-    dialogForm.value?.clearForm();
-    visible.value = false;
-  });
+  rules,
 };
 </script>
 
@@ -222,6 +109,30 @@ const handleDialogForm = () => {
     background: rgba(248, 246, 246, 0.7);
     box-shadow: 0px 16px 48px 16px rgba(0, 0, 0, 0.08),
       0px 12px 32px rgba(0, 0, 0, 0.12), 0px 8px 16px -8px rgba(0, 0, 0, 0.16);
+  }
+  .login-warpper {
+    width: 100%;
+    .tittle-warpper {
+      display: flex;
+      width: 100%;
+      .account {
+        // width: 50%;
+        flex: 1;
+        height: 50%;
+        // background: red;
+        // background-image: radial-gradient(circle, #ff0000, #ff0000 50%, transparent 50%);
+        background-color: #f0f0f0;
+        clip-path: path("M 0 0 L 100 0 L 100 100 L 0 100 L 0 0");
+      }
+      .phone {
+        // width: 50%;
+        flex: 1;
+        height: 50%;
+        // background: blue;
+      }
+      .active {
+      }
+    }
   }
 }
 </style>

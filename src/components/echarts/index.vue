@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import echarts from "@/global/echarts/index.ts";
 import type { ECOption } from "@/global/echarts/index.ts";
+import { useEventLister } from "@/uilts/base";
 
 import { debounce } from "lodash-es";
 defineOptions({
@@ -43,7 +44,6 @@ const options = computed(() => {
 //   }
 // );
 watchEffect(() => {
-  console.log(" 1111");
   myChart?.value?.setOption?.(options.value);
 });
 
@@ -56,10 +56,10 @@ function initChart() {
 const events = Object.entries(useAttrs());
 
 // 监听图表事件
-events.forEach(([key, value]) => {
+events.forEach(([key]) => {
   if (key.startsWith("on") && !key.startsWith("onChart")) {
     const on = toLine(key).substring(3);
-    myChart.value?.on(on, (...args) => emits(on, ...args));
+    myChart.value?.on(on, (...args:any[]) => emits(on, ...args));
   }
 });
 
@@ -73,13 +73,14 @@ const resizeChart = debounce(
     trailing: false,
   }
 );
+let clean: () => void;
 
 onMounted(() => {
   initChart();
-  window.addEventListener("resize", resizeChart);
+  clean = useEventLister(el.value, "resize", resizeChart, {});
 });
 onUnmounted(() => {
-  window.removeEventListener("resize", resizeChart);
+  clean?.();
   myChart.value = null;
 });
 </script>

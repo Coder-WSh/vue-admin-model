@@ -32,40 +32,33 @@ interface SpanMethodProps {
   rowIndex: number;
   columnIndex: number;
 }
-
-const arraySpanMethod: () => any = () => {
-  return { rowSpan: 1, colSpan: 2 };
-};
+type UserItem = keyof User;
+// const arraySpanMethod: () => any = () => {
+//   return { rowSpan: 1, colSpan: 2 };
+// };
 
 const objectSpanMethod = ({
   row,
   column,
   rowIndex,
-  columnIndex,
+  // columnIndex,
 }: SpanMethodProps) => {
+  const columnProp = column.property as UserItem;
   if (rowIndex === 0) {
     return {
-      rowspan: conculateMaxLength(
-        rowIndex,
-        row[column.property],
-        column.property
-      ),
+      rowspan: conculateMaxLength(rowIndex, row[columnProp], columnProp),
       colspan: 1,
     };
   }
 
-  if (row[column.property] === tableData.value[rowIndex - 1][column.property]) {
+  if (row[columnProp] === tableData.value[rowIndex - 1][columnProp]) {
     return {
       rowspan: 0,
       colspan: 0,
     };
   } else {
     return {
-      rowspan: conculateMaxLength(
-        rowIndex,
-        row[column.property],
-        column.property
-      ),
+      rowspan: conculateMaxLength(rowIndex, row[columnProp], columnProp),
       colspan: 1,
     };
   }
@@ -74,7 +67,7 @@ const objectSpanMethod = ({
 const conculateMaxLength = (
   start: number,
   sameTarget: string | number,
-  label: string
+  label: UserItem
 ) => {
   const replaceTarget = tableData.value.slice(start + 1);
   let j = 1;

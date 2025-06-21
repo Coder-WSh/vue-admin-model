@@ -1,8 +1,8 @@
-import { log } from "console";
+
 
 const WINDOW = window;
 
-type ElInstanceType = HTMLElement;
+type ElInstanceType = HTMLElement | null;
 
 export const toEle = (instance: any) => {
   const plain = toValue(instance);
@@ -12,14 +12,14 @@ export function useEventLister(
   event: string,
   lister: any,
   options: any
-): Function;
+): () => void;
 
 export function useEventLister(
   el: ElInstanceType,
   event: string | string[],
   lister: any,
   options: any
-): Function;
+): () => void;
 
 export function useEventLister(...args: any[]) {
   let el: any;

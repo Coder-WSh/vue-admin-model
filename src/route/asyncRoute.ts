@@ -1,4 +1,4 @@
-import { useInfosStore } from "@/store/userInfos/Infos";
+
 import type { RouteRecordRaw } from "vue-router";
 // 异步路由
 const asyncRoute: RouteRecordRaw[] = [
@@ -59,7 +59,7 @@ const asyncRoute: RouteRecordRaw[] = [
   {
     path: "/conponent",
     name: "Conponent",
-    // component: () => import("../views/three-test/Three-test.vue"),
+    // component: () => import("../views/CostomComponent/index.vue"),
     // redirect: "/dashboard2",
     meta: {
       tittle: "组件展示",
@@ -72,7 +72,7 @@ const asyncRoute: RouteRecordRaw[] = [
       {
         path: "/table",
         name: "Table",
-        // component: () => import("../views/three-test/Three-test.vue"),
+        component: () => import("@/views/CostomConponent/table/index.vue"),
         // redirect: "/dashboard2",
         meta: { tittle: "表格", isShow: true, roles: ["admin"] },
         children: [],
@@ -80,7 +80,7 @@ const asyncRoute: RouteRecordRaw[] = [
       {
         path: "/form",
         name: "Form",
-        // component: () => import("../views/three-test/Three-test.vue"),
+        component: () => import("@/views/CostomConponent/form/index.vue"),
         // redirect: "/dashboard2",
         meta: { tittle: "表单", isShow: true, roles: ["admin"] },
         children: [],
@@ -88,7 +88,7 @@ const asyncRoute: RouteRecordRaw[] = [
       {
         path: "/upload",
         name: "Upload",
-        // component: () => import("../views/three-test/Three-test.vue"),
+        component: () => import("@/views/CostomConponent/upload/index.vue"),
         // redirect: "/dashboard2",
         meta: { tittle: "上传", isShow: true, roles: ["admin"] },
         children: [],
@@ -109,27 +109,5 @@ const asyncRoute: RouteRecordRaw[] = [
   },
 ];
 
-// router.beforeEach((to, form, next) => {
-//   let token = "";
-//   if (!token && to.name !== "Login") {
-//     return { name: "Login" };
-//   }
-//   if (token && to.name === "Login") {
-//     token = "";
-//     return { name: "Login" };
-//   }
-//   // const infos = useInfosStore();
-//   // if (to.name === "main") {
-//   //   if (!!infos.token) {
-//   //     next("/login");
-//   //     return;
-//   //   }
-//   //   next();
-//   // } else {
-//   //   next();
-//   // }
-
-//   next();
-// });
 
 export default asyncRoute;

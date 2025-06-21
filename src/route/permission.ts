@@ -11,7 +11,7 @@ let hasPermission = false;
 let roleRouter: Ref<RouteRecordRaw[]> = ref([]);
 let infosStore: any;
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   NProgress.start();
   // 判断是否登录
   // const infosStore = useInfosStore();

@@ -1,4 +1,4 @@
-import { ElMessageBox, ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import router from "../route";
 
 /**
@@ -25,7 +25,7 @@ const alterBox = () => {
     });
 };
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, _) => {
   if (to.name !== "login" && !isAuthenied()) {
     alterBox();
   }

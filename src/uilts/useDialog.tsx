@@ -1,4 +1,4 @@
-import { ElButton, ElMessageBox } from "element-plus";
+import { ElMessageBox } from "element-plus";
 
 interface option {
     tittle?: string
